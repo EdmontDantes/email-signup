@@ -5,7 +5,7 @@
 }
 
 body {
-	background: #FFCA3A;
+	background: #FFFFFF;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -33,7 +33,7 @@ span {
 }
 
 a {
-	color: #847a92;
+	color: #BFCBC2;
 	font-size: 14px;
 	text-decoration: none;
 
@@ -41,8 +41,8 @@ a {
 
 button {
 	border-radius: 20px;
-	border: 1px solid #766a88;
-	background-color: #6A4C93;
+	border: 1px solid #91F5AD;
+	background-color: #7ebd90;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -157,8 +157,8 @@ input {
 
 .overlays-wrapper {
 	background: #1982C4;
-	background: -webkit-linear-gradient(to right, #1982C4, #FF4B2B);
-	background: linear-gradient(to right, #FF4B2B, #1982C4);
+	background: -webkit-linear-gradient(to right, #C2E812, #FF934F);
+	background: linear-gradient(to right, #FF934F, #C2E812);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
