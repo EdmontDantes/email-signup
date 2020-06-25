@@ -23,7 +23,7 @@ const loginValidate = (req, res, next) => {
     const info = validationResult(req);
     if(!info.isEmpty()) {
         req.flash('errors', 'Invalid user Name or Password');
-        return res.redirect('/');
+        return res.redirect('/users');
     }
     next();
 }
@@ -44,7 +44,7 @@ router.get('/', index);
 
 router.post('/login', loginCheck, loginValidate , passport.authenticate('local-login', {
   successRedirect: '/users/logged',
-  failureRedirect: '/',
+  failureRedirect: '/users',
   failureFlash: true
   }));
 router.get('/logged', checkAuthentication, logged)
@@ -54,12 +54,12 @@ router.post('/register', (req, res) => {
   const { userName, name, email, password, street, city, state } = req.body
   if(!userName || !name || !email || !password || !street || !city || !state) {
       req.flash('errors', 'All inputs Must Be Filled')
-      res.redirect('/')
+      res.redirect('/users')
   } else {
       User.findOne( { userName: req.body.userName }).then((user) => {
           if(user) {
                   req.flash('errors', 'account already exists');
-                  res.redirect('/');
+                  res.redirect('/users');
           } else {
               const newUser = new User();
               const salt = bcrypt.genSaltSync(10);
@@ -75,7 +75,7 @@ router.post('/register', (req, res) => {
   
               newUser.save().then((user) => {
                   req.flash('success', 'your account has been created please login')
-                  res.redirect('/')
+                  res.redirect('/users')
 
               })
               .catch((error) => console.log(error));
