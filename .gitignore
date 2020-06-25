@@ -1,0 +1,4 @@
+.env
+PORT = 8508
+node_modules
+.history
