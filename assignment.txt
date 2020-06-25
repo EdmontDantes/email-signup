@@ -1,0 +1,29 @@
+USER EMAIL SIGNUP CLASSWORK CHALLENGE
+** Progress is due at the end of class
+** In your approach to this exercise, Break this challenge down into smaller problems to solve. Solve one thing at a time and when you get that working, move to another problem. Do the parts that you know you can do first. If you try to do too much at the same time you may end up in the weeds
+-- Email Signup
+Using mailjet mailing service 
+https://dev.mailjet.com/
+(read the docs)
+-- nanoid npm package (read the docs) https://www.npmjs.com/package/nanoid
+-- Create a signup and login ejs
+-- Signup: the recipient enters username, name, email, address object,(address holds fields for number, city and state)
+-- When the user signs up, the user is sent an email with a friendly welcome to the name of your app, (hard coded), and all information inputted by the user ..... (info should be taken from the form, not hard coded)
+-- User should also receive a temporary password (not hard coded), and a clickable link. Give user instructions in email to use link to update password and complete signup (hard coded)
+-- When the user clicks the link the user should be taken to a page where they can input their username, temporary password, a new password, a confirm new password input
+-- User is logged in if new password fields match and password should be updated in the database
+-- If user is logged user should see a page that says, you are now logged in and a logout link. User can ONLY reach this page when logged in.
+-- Make a logout route
+-- Use nanoid to create your temporary password.
+NOTE:
+User is NOT logged in after signing up
+User should ONLY be logged in two cases:
+1. After User changes to new password user should be logged in
+2. On login page user can login ONLY if it is the permanent password, NOT with the temporary password
+-- Use passport
+Make page clean. designed front end not required although always appreciated. :)
+Ninja goals:
+After the user updates password
+, the user should not be able to click link in email and reach page again, nor should user be able to paste the link in url and reach page.
+The page should not exist.
+Let user visually know that the page does not exist or link does not exist or unable to reach link, however you articulate it.
