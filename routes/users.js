@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+require('dotenv').config()
+const mailjet = require ('node-mailjet')
 
 // const router = require('express').Router();
 const passport = require('passport');
@@ -56,21 +58,52 @@ router.post('/register', (req, res) => {
       req.flash('errors', 'All inputs Must Be Filled')
       res.redirect('/users')
   } else {
-      User.findOne( { userName: req.body.userName }).then((user) => {
-          if((user.userName === req.body.userName) && (user.email === req.body.email)) {
+      User.findOne({userName, email}).then((user) => {
+          if(user) {
                   req.flash('errors', 'account already exists');
                   res.redirect('/users');
           } else {
               const newUser = new User();
-              const salt = bcrypt.genSaltSync(10);
-              const hash = bcrypt.hashSync(req.body.password, salt);
+              // const salt = bcrypt.genSaltSync(10);
+              // const hash = bcrypt.hashSync(req.body.password, salt);
   
-              newUser.userName = req.body.userName;
-              newUser.name = req.body.name;
-              newUser.email = req.body.email;
-              newUser.address.street = req.body.street;
-              newUser.address.city = req.body.city;
-              newUser.address.state = req.body.state;
+              newUser.userName = userName;
+              newUser.name = name;
+              newUser.email = email;
+              newUser.address.street = street;
+              newUser.address.city = city;
+              newUser.address.state = state;
+              mailjet.connect(`${process.env.MAILJET_KEY_ONE}`, `${process.env.MAILJET_KEY_TWO}`)
+              const request = mailjet
+              request
+              .post("send", {'version': 'v3.1'})
+              .request({
+                "Messages":[
+                  {
+                    "From": {
+                      "Email": "bogdan.kowaltchook@codeimmersives.com",
+                      "Name": "Bogdan"
+                    },
+                    "To": [
+                      {
+                        "Email": `${email}`,
+                        "Name": `${name}`
+                      }
+                    ],
+                    "Subject": "Greetings from Email-signup project",
+                    "TextPart": `${name} your email ${email} was used to sign for an account with us please review your provided to us information and use temporary password and following provided link in this email finish sign up process`,
+                    "HTMLPart": `<br /> UserName: ${userName}, <br /> Name: ${name}, <br /> Email: ${email}, <br /> <br /> Address: ${street}, ${city}, ${state}`,
+                    "CustomID": "AppGettingStartedTest"
+                  }
+                ]
+              })
+              request
+                .then((result) => {
+                  console.log(result.body)
+                })
+                .catch((err) => {
+                  console.log(err.statusCode)
+                })
               newUser.password = hash;
   
               newUser.save().then((user) => {
@@ -80,7 +113,7 @@ router.post('/register', (req, res) => {
               })
               .catch((error) => console.log(error));
           }
-      });
+      }).catch(err => console.log(err));
 
   }
 })
