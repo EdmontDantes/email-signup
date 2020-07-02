@@ -13,10 +13,10 @@
             <div class="form-container login-container">
                 <form class="form-class" action="/users/login" METHOD="POST">
                     <h1>Log into Account</h1>
-                    <% if (success.length > 0) { %>
+                    <% if (success.length) { %>
                         <span style="color:lawngreen"></span><%= success %></span>
                     <% } %> 
-                    <% if (errors.length > 0) { %>
+                    <% if (errors.length) { %>
                         <span style="color:red"><%= errors %></span>
                     <% } %> 
                     <input type="text" name="userName" placeholder="User Name" />

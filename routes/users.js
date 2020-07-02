@@ -8,14 +8,14 @@ const passport = require('passport');
 const { index, logged } = require('../controllers/userControllers');
 
 // Check for authentication used in app.js as well for base paths
-const { checkAuthentication } = require('../middlewares/isAuthenticated')
+const checkAuthentication = require('../middlewares/isAuthenticated')
 
 
 // Validate user input for login
 const { check, validationResult } = require('express-validator');
 
 const loginCheck = [
-    check('userName').isEmail(),
+    check('userName').not().isEmpty(),
     check('password').isLength({ min: 3})
 ];
 
@@ -47,17 +47,17 @@ router.post('/login', loginCheck, loginValidate , passport.authenticate('local-l
   failureRedirect: '/users',
   failureFlash: true
   }));
-router.get('/logged', checkAuthentication, logged)
+router.get('/logged', logged)
 
 /// have to use register function staight here since it doens't redirect to / route inside controller it will redirect to users/
 router.post('/register', (req, res) => {
   const { userName, name, email, password, street, city, state } = req.body
-  if(!userName || !name || !email || !password || !street || !city || !state) {
+  if(!userName || !name || !email) {
       req.flash('errors', 'All inputs Must Be Filled')
       res.redirect('/users')
   } else {
       User.findOne( { userName: req.body.userName }).then((user) => {
-          if(user) {
+          if((user.userName === req.body.userName) && (user.email === req.body.email)) {
                   req.flash('errors', 'account already exists');
                   res.redirect('/users');
           } else {
@@ -74,7 +74,7 @@ router.post('/register', (req, res) => {
               newUser.password = hash;
   
               newUser.save().then((user) => {
-                  req.flash('success', 'your account has been created please login')
+                  req.flash('success', 'your account has been created please check your email for temporary password')
                   res.redirect('/users')
 
               })
@@ -86,6 +86,7 @@ router.post('/register', (req, res) => {
 })
 router.get('/logout', (req, res) => {
   req.logout();
+  req.session.destroy();
   req.flash('success', 'You are now logged out');
   res.redirect('/');
 })
