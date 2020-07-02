@@ -75,7 +75,6 @@ router.post('/register', (req, res) => {
               newUser.address.state = state;
               mailjet.connect(`${process.env.MAILJET_KEY_ONE}`, `${process.env.MAILJET_KEY_TWO}`)
               const request = mailjet
-              request
               .post("send", {'version': 'v3.1'})
               .request({
                 "Messages":[
